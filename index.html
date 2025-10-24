@@ -7,19 +7,23 @@
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+        
         :root {
-            --primary: #4f46e5;
-            --primary-dark: #4338ca;
-            --secondary: #06b6d4;
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #8b5cf6;
+            --accent: #ec4899;
             --success: #10b981;
             --danger: #ef4444;
             --warning: #f59e0b;
+            --info: #3b82f6;
             --dark: #1e293b;
             --darker: #0f172a;
-            --light: #f1f5f9;
             --card-bg: #1e293b;
             --text-primary: #f8fafc;
             --text-secondary: #cbd5e1;
+            --border-color: rgba(255, 255, 255, 0.1);
         }
 
         * {
@@ -33,6 +37,21 @@
             color: var(--text-primary);
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Background Pattern */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 1px 1px, rgba(255, 255, 255, 0.05) 1px, transparent 0);
+            background-size: 40px 40px;
+            z-index: -1;
         }
 
         .container {
@@ -43,9 +62,9 @@
 
         /* Header */
         .header {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-            padding: 2rem 0;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            padding: 2.5rem 0;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
             position: relative;
             overflow: hidden;
         }
@@ -53,34 +72,56 @@
         .header::before {
             content: "";
             position: absolute;
-            top: 0;
-            right: 0;
-            bottom: 0;
-            left: 0;
-            background-image: 
-                linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
-            background-size: 20px 20px;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0) 70%);
+            animation: pulse 8s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(0.8); opacity: 0.5; }
+            50% { transform: scale(1.2); opacity: 0.8; }
+            100% { transform: scale(0.8); opacity: 0.5; }
         }
 
         /* Cards */
         .card {
             background-color: var(--card-bg);
-            border-radius: 0.75rem;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            border-radius: 1rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
             overflow: hidden;
             transition: all 0.3s ease;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--border-color);
+            position: relative;
+        }
+
+        .card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent));
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover::before {
+            transform: scaleX(1);
         }
 
         .card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            transform: translateY(-6px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
         }
 
         .card-header {
-            padding: 1.25rem;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
             background-color: rgba(255, 255, 255, 0.03);
         }
 
@@ -93,38 +134,39 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            width: 0.75rem;
-            height: 0.75rem;
+            width: 0.875rem;
+            height: 0.875rem;
             border-radius: 9999px;
             margin-right: 0.5rem;
         }
 
         .status-online {
             background-color: var(--success);
-            box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.3);
-            animation: pulse 2s infinite;
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.3);
+            animation: glow 2s infinite;
         }
 
         .status-offline {
             background-color: var(--danger);
-            box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.3);
+            box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.3);
         }
 
-        @keyframes pulse {
+        @keyframes glow {
             0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
             70% { box-shadow: 0 0 0 10px rgba(16, 185, 129, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
         }
 
         /* Metric Cards */
         .metric-card {
-            background: linear-gradient(135deg, rgba(79, 70, 229, 0.1) 0%, rgba(6, 182, 212, 0.1) 100%);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 0.75rem;
-            padding: 1.5rem;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%);
+            border: 1px solid var(--border-color);
+            border-radius: 1rem;
+            padding: 1.75rem;
             transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
+            height: 100%;
         }
 
         .metric-card::before {
@@ -134,33 +176,48 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(135deg, rgba(79, 70, 229, 0.05) 0%, rgba(6, 182, 212, 0.05) 100%);
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.05) 0%, rgba(139, 92, 246, 0.05) 100%);
             z-index: -1;
         }
 
         .metric-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            transform: translateY(-6px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            border-color: rgba(99, 102, 241, 0.3);
         }
 
         .metric-icon {
-            width: 3rem;
-            height: 3rem;
-            border-radius: 0.5rem;
+            width: 3.5rem;
+            height: 3.5rem;
+            border-radius: 0.75rem;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.25rem;
-            margin-bottom: 1rem;
+            font-size: 1.5rem;
+            margin-bottom: 1.25rem;
             background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            box-shadow: 0 10px 15px -3px rgba(99, 102, 241, 0.3);
+            position: relative;
+            z-index: 1;
+        }
+
+        .metric-icon::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0) 100%);
+            border-radius: 0.75rem;
         }
 
         .metric-value {
-            font-size: 1.875rem;
+            font-size: 2rem;
             font-weight: 700;
             color: var(--text-primary);
-            line-height: 1;
+            line-height: 1.1;
+            margin-bottom: 0.25rem;
         }
 
         .metric-label {
@@ -169,16 +226,26 @@
             font-weight: 500;
             text-transform: uppercase;
             letter-spacing: 0.05em;
-            margin-top: 0.25rem;
         }
 
         /* Progress Bars */
+        .progress-wrapper {
+            margin-bottom: 1.5rem;
+        }
+
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
         .progress {
-            height: 0.5rem;
+            height: 0.75rem;
             background-color: rgba(255, 255, 255, 0.1);
             border-radius: 9999px;
             overflow: hidden;
-            margin-top: 0.5rem;
+            position: relative;
         }
 
         .progress-bar {
@@ -207,29 +274,47 @@
 
         /* Routes List */
         .routes-list {
-            max-height: 20rem;
+            max-height: 24rem;
             overflow-y: auto;
             background-color: rgba(255, 255, 255, 0.03);
-            border-radius: 0.5rem;
-            padding: 1rem;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 0.75rem;
+            padding: 1.25rem;
+            border: 1px solid var(--border-color);
         }
 
         .route-item {
-            padding: 0.75rem;
+            padding: 0.875rem;
             border-bottom: 1px solid rgba(255, 255, 255, 0.05);
             font-family: 'SF Mono', Monaco, Inconsolata, 'Roboto Mono', Consolas, 'Courier New', monospace;
             font-size: 0.875rem;
             color: var(--text-secondary);
             transition: all 0.2s ease;
-            border-radius: 0.375rem;
-            margin-bottom: 0.25rem;
+            border-radius: 0.5rem;
+            margin-bottom: 0.375rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .route-item::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 3px;
+            background: linear-gradient(to bottom, var(--primary), var(--secondary));
+            transform: scaleY(0);
+            transition: transform 0.2s ease;
         }
 
         .route-item:hover {
-            background-color: rgba(79, 70, 229, 0.1);
+            background-color: rgba(99, 102, 241, 0.1);
             color: var(--text-primary);
-            transform: translateX(4px);
+            transform: translateX(6px);
+        }
+
+        .route-item:hover::before {
+            transform: scaleY(1);
         }
 
         .route-item:last-child {
@@ -242,12 +327,12 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 3rem;
+            padding: 4rem;
         }
 
         .spinner {
-            width: 3rem;
-            height: 3rem;
+            width: 3.5rem;
+            height: 3.5rem;
             border: 3px solid rgba(255, 255, 255, 0.1);
             border-top-color: var(--primary);
             border-radius: 50%;
@@ -260,61 +345,37 @@
 
         /* Error Message */
         .error {
-            background-color: rgba(239, 68, 68, 0.1);
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, rgba(220, 38, 38, 0.1) 100%);
             border: 1px solid rgba(239, 68, 68, 0.2);
             border-left: 4px solid var(--danger);
             color: var(--text-primary);
-            padding: 1rem 1.5rem;
-            border-radius: 0.5rem;
-            margin: 1.5rem 0;
+            padding: 1.25rem 1.75rem;
+            border-radius: 0.75rem;
+            margin: 2rem 0;
             display: flex;
             align-items: center;
-            gap: 0.75rem;
-        }
-
-        /* Notification */
-        .notification {
-            position: fixed;
-            top: 1.5rem;
-            right: 1.5rem;
-            padding: 1rem 1.5rem;
-            border-radius: 0.5rem;
-            color: white;
-            font-weight: 500;
+            gap: 1rem;
             box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-            z-index: 100;
-            transform: translateX(150%);
-            transition: transform 0.3s ease;
-            max-width: 24rem;
-        }
-
-        .notification.show {
-            transform: translateX(0);
-        }
-
-        .notification.success {
-            background: linear-gradient(135deg, var(--success) 0%, #059669 100%);
-        }
-
-        .notification.error {
-            background: linear-gradient(135deg, var(--danger) 0%, #dc2626 100%);
         }
 
         /* Last Update */
         .last-update {
-            display: inline-block;
-            background-color: rgba(255, 255, 255, 0.05);
-            padding: 0.5rem 1rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%);
+            padding: 0.75rem 1.5rem;
             border-radius: 9999px;
             font-size: 0.875rem;
             color: var(--text-secondary);
-            margin-top: 1.5rem;
+            margin-top: 2rem;
+            border: 1px solid var(--border-color);
         }
 
         /* Grid Layout */
         .grid {
             display: grid;
-            gap: 1.5rem;
+            gap: 1.75rem;
         }
 
         .grid-cols-1 {
@@ -340,7 +401,15 @@
             }
             
             .metric-value {
-                font-size: 1.5rem;
+                font-size: 1.75rem;
+            }
+            
+            .header {
+                padding: 1.75rem 0;
+            }
+            
+            .header h1 {
+                font-size: 1.75rem;
             }
         }
 
@@ -349,6 +418,10 @@
             font-family: 'SF Mono', Monaco, Inconsolata, 'Roboto Mono', Consolas, 'Courier New', monospace;
             font-weight: 600;
             letter-spacing: 0.05em;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         /* Realtime indicator */
@@ -356,17 +429,19 @@
             display: inline-flex;
             align-items: center;
             gap: 0.5rem;
-            background-color: rgba(16, 185, 129, 0.1);
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(5, 150, 105, 0.1) 100%);
             color: var(--success);
-            padding: 0.25rem 0.75rem;
+            padding: 0.375rem 1rem;
             border-radius: 9999px;
             font-size: 0.75rem;
-            font-weight: 500;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            border: 1px solid rgba(16, 185, 129, 0.2);
         }
 
         .realtime-dot {
-            width: 0.5rem;
-            height: 0.5rem;
+            width: 0.625rem;
+            height: 0.625rem;
             border-radius: 50%;
             background-color: var(--success);
             animation: blink 1.5s infinite;
@@ -375,6 +450,65 @@
         @keyframes blink {
             0%, 100% { opacity: 1; }
             50% { opacity: 0.3; }
+        }
+
+        /* Stats Item */
+        .stats-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            padding: 1.25rem;
+            background-color: rgba(255, 255, 255, 0.03);
+            border-radius: 0.75rem;
+            transition: all 0.2s ease;
+        }
+
+        .stats-item:hover {
+            background-color: rgba(99, 102, 241, 0.05);
+            transform: translateY(-2px);
+        }
+
+        .stats-icon {
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            flex-shrink: 0;
+        }
+
+        .stats-content {
+            flex: 1;
+        }
+
+        /* Badge */
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.025em;
+        }
+
+        .badge-success {
+            background-color: rgba(16, 185, 129, 0.2);
+            color: var(--success);
+        }
+
+        .badge-danger {
+            background-color: rgba(239, 68, 68, 0.2);
+            color: var(--danger);
+        }
+
+        .badge-info {
+            background-color: rgba(59, 130, 246, 0.2);
+            color: var(--info);
         }
 
         /* Scrollbar */
@@ -388,12 +522,55 @@
         }
 
         ::-webkit-scrollbar-thumb {
-            background: rgba(255, 255, 255, 0.2);
+            background: rgba(99, 102, 241, 0.5);
             border-radius: 9999px;
         }
 
         ::-webkit-scrollbar-thumb:hover {
-            background: rgba(255, 255, 255, 0.3);
+            background: rgba(99, 102, 241, 0.7);
+        }
+
+        /* Section Title */
+        .section-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .section-title i {
+            color: var(--primary);
+        }
+
+        /* Performance Grid */
+        .performance-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        /* Info Box */
+        .info-box {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.05) 0%, rgba(139, 92, 246, 0.05) 100%);
+            border: 1px solid var(--border-color);
+            border-radius: 0.75rem;
+            padding: 1.25rem;
+            margin-bottom: 1rem;
+        }
+
+        .info-box-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        .info-box-value {
+            font-size: 1.5rem;
+            font-weight: 700;
         }
     </style>
 </head>
@@ -409,14 +586,14 @@
                     </h1>
                     <p class="mt-1 text-indigo-200">Memantau status dan kinerja API secara real-time</p>
                 </div>
-                <div class="mt-4 md:mt-0 flex items-center gap-3">
+                <div class="mt-4 md:mt-0 flex items-center gap-4">
                     <div class="realtime-indicator">
                         <span class="realtime-dot"></span>
                         <span>REALTIME</span>
                     </div>
                     <div id="mainStatus" class="flex items-center">
                         <span class="status-indicator status-offline"></span>
-                        <span>Memeriksa status...</span>
+                        <span class="font-medium">Memeriksa status...</span>
                     </div>
                 </div>
             </div>
@@ -424,7 +601,7 @@
     </header>
 
     <!-- Main Content -->
-    <main class="container py-8">
+    <main class="container py-10">
         <!-- Loading Spinner -->
         <div id="loadingSpinner" class="loading" style="display: none;">
             <div class="spinner"></div>
@@ -440,7 +617,7 @@
         <!-- API Data -->
         <div id="apiData" style="display: none;">
             <!-- Metrics Grid -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 mb-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 mb-10">
                 <div class="metric-card">
                     <div class="metric-icon">
                         <i class="bi bi-check-circle-fill"></i>
@@ -475,45 +652,52 @@
             </div>
 
             <!-- System Info & Performance -->
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-10">
                 <!-- System Info Card -->
                 <div class="card">
-                    <div class="card-header flex justify-between items-center">
-                        <h2 class="text-lg font-semibold flex items-center">
-                            <i class="bi bi-speedometer2 mr-2"></i>
+                    <div class="card-header">
+                        <h2 class="section-title">
+                            <i class="bi bi-speedometer2"></i>
                             Informasi Sistem
                         </h2>
-                        <span class="px-3 py-1 bg-indigo-600 text-white text-sm rounded-full" id="statusCode">-</span>
                     </div>
                     <div class="card-body">
                         <div class="grid grid-cols-2 gap-4">
-                            <div class="flex items-start">
-                                <i class="bi bi-clock-history text-indigo-400 text-xl mr-3 mt-1"></i>
-                                <div>
+                            <div class="stats-item">
+                                <div class="stats-icon">
+                                    <i class="bi bi-clock-history"></i>
+                                </div>
+                                <div class="stats-content">
                                     <div class="metric-value text-2xl runtime" id="runtimeValue">-</div>
                                     <div class="metric-label">Runtime</div>
                                 </div>
                             </div>
                             
-                            <div class="flex items-start">
-                                <i class="bi bi-lightning-charge-fill text-amber-400 text-xl mr-3 mt-1"></i>
-                                <div>
+                            <div class="stats-item">
+                                <div class="stats-icon">
+                                    <i class="bi bi-lightning-charge-fill"></i>
+                                </div>
+                                <div class="stats-content">
                                     <div class="metric-value text-2xl" id="speedValue">-</div>
                                     <div class="metric-label">Kecepatan</div>
                                 </div>
                             </div>
                             
-                            <div class="flex items-start">
-                                <i class="bi bi-geo-alt-fill text-cyan-400 text-xl mr-3 mt-1"></i>
-                                <div>
+                            <div class="stats-item">
+                                <div class="stats-icon">
+                                    <i class="bi bi-geo-alt-fill"></i>
+                                </div>
+                                <div class="stats-content">
                                     <div class="metric-value text-2xl" id="regionValue">-</div>
                                     <div class="metric-label">Region</div>
                                 </div>
                             </div>
                             
-                            <div class="flex items-start">
-                                <i class="bi bi-person-fill text-emerald-400 text-xl mr-3 mt-1"></i>
-                                <div>
+                            <div class="stats-item">
+                                <div class="stats-icon">
+                                    <i class="bi bi-person-fill"></i>
+                                </div>
+                                <div class="stats-content">
                                     <div class="metric-value text-2xl" id="creatorValue">-</div>
                                     <div class="metric-label">Creator</div>
                                 </div>
@@ -525,59 +709,51 @@
                 <!-- Performance Card -->
                 <div class="card">
                     <div class="card-header">
-                        <h2 class="text-lg font-semibold flex items-center">
-                            <i class="bi bi-cpu mr-2"></i>
+                        <h2 class="section-title">
+                            <i class="bi bi-cpu"></i>
                             Performa Server
                         </h2>
                     </div>
                     <div class="card-body">
-                        <div class="space-y-4">
-                            <div>
-                                <div class="flex justify-between mb-1">
-                                    <span class="font-medium">Success Rate</span>
-                                    <span class="px-2 py-1 bg-emerald-500 text-white text-xs rounded-full" id="successRateValue">-</span>
-                                </div>
-                                <div class="progress">
-                                    <div class="progress-bar bg-emerald-500" id="successRateBar" style="width: 0%"></div>
-                                </div>
+                        <div class="progress-wrapper">
+                            <div class="progress-label">
+                                <span>Success Rate</span>
+                                <span class="badge badge-success" id="successRateValue">-</span>
+                            </div>
+                            <div class="progress">
+                                <div class="progress-bar bg-success" id="successRateBar" style="width: 0%"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="progress-wrapper">
+                            <div class="progress-label">
+                                <span>Error Rate</span>
+                                <span class="badge badge-danger" id="errorRateValue">-</span>
+                            </div>
+                            <div class="progress">
+                                <div class="progress-bar bg-danger" id="errorRateBar" style="width: 0%"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="progress-wrapper">
+                            <div class="progress-label">
+                                <span>RAM Usage</span>
+                                <span class="badge badge-info" id="ramUsageValue">-</span>
+                            </div>
+                            <div class="progress">
+                                <div class="progress-bar bg-info" id="ramUsageBar" style="width: 0%"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="performance-grid">
+                            <div class="info-box">
+                                <div class="info-box-title">CPU Load</div>
+                                <div class="info-box-value" id="cpuLoadValue">-</div>
                             </div>
                             
-                            <div>
-                                <div class="flex justify-between mb-1">
-                                    <span class="font-medium">Error Rate</span>
-                                    <span class="px-2 py-1 bg-red-500 text-white text-xs rounded-full" id="errorRateValue">-</span>
-                                </div>
-                                <div class="progress">
-                                    <div class="progress-bar bg-red-500" id="errorRateBar" style="width: 0%"></div>
-                                </div>
-                            </div>
-                            
-                            <div>
-                                <div class="flex justify-between mb-1">
-                                    <span class="font-medium">RAM Usage</span>
-                                    <span class="px-2 py-1 bg-cyan-500 text-white text-xs rounded-full" id="ramUsageValue">-</span>
-                                </div>
-                                <div class="progress">
-                                    <div class="progress-bar bg-cyan-500" id="ramUsageBar" style="width: 0%"></div>
-                                </div>
-                            </div>
-                            
-                            <div class="grid grid-cols-2 gap-4 pt-2">
-                                <div class="flex items-center">
-                                    <i class="bi bi-cpu-fill text-amber-400 text-xl mr-3"></i>
-                                    <div>
-                                        <div class="metric-value text-2xl" id="cpuLoadValue">-</div>
-                                        <div class="metric-label">CPU Load</div>
-                                    </div>
-                                </div>
-                                
-                                <div class="flex items-center">
-                                    <i class="bi bi-arrow-up-circle-fill text-indigo-400 text-xl mr-3"></i>
-                                    <div>
-                                        <div class="metric-value text-2xl" id="bandwidthValue">-</div>
-                                        <div class="metric-label">Bandwidth</div>
-                                    </div>
-                                </div>
+                            <div class="info-box">
+                                <div class="info-box-title">Bandwidth</div>
+                                <div class="info-box-value" id="bandwidthValue">-</div>
                             </div>
                         </div>
                     </div>
@@ -587,41 +763,32 @@
             <!-- Debug Info Card -->
             <div class="card">
                 <div class="card-header">
-                    <h2 class="text-lg font-semibold flex items-center">
-                        <i class="bi bi-code-slash mr-2"></i>
+                    <h2 class="section-title">
+                        <i class="bi bi-code-slash"></i>
                         Informasi Debug
                     </h2>
                 </div>
                 <div class="card-body">
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-                        <div class="flex items-center">
-                            <i class="bi bi-clock-fill text-indigo-400 text-xl mr-3"></i>
-                            <div>
-                                <div class="metric-value text-xl" id="debugTimeValue">-</div>
-                                <div class="metric-label">Debug Time</div>
-                            </div>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                        <div class="info-box">
+                            <div class="info-box-title">Debug Time</div>
+                            <div class="info-box-value" id="debugTimeValue">-</div>
                         </div>
                         
-                        <div class="flex items-center">
-                            <i class="bi bi-diagram-3-fill text-emerald-400 text-xl mr-3"></i>
-                            <div>
-                                <div class="metric-value text-xl" id="totalRoutesValue">-</div>
-                                <div class="metric-label">Total Routes</div>
-                            </div>
+                        <div class="info-box">
+                            <div class="info-box-title">Total Routes</div>
+                            <div class="info-box-value" id="totalRoutesValue">-</div>
                         </div>
                         
-                        <div class="flex items-center">
-                            <i class="bi bi-file-earmark-fill text-cyan-400 text-xl mr-3"></i>
-                            <div>
-                                <div class="metric-value text-xl" id="loadedFilesValue">-</div>
-                                <div class="metric-label">Loaded Files</div>
-                            </div>
+                        <div class="info-box">
+                            <div class="info-box-title">Loaded Files</div>
+                            <div class="info-box-value" id="loadedFilesValue">-</div>
                         </div>
                     </div>
                     
                     <div>
-                        <h3 class="text-md font-medium mb-3 flex items-center">
-                            <i class="bi bi-list-ul mr-2"></i>
+                        <h3 class="section-title">
+                            <i class="bi bi-list-ul"></i>
                             Daftar Route
                         </h3>
                         <div class="routes-list" id="routesList">
@@ -635,13 +802,11 @@
         <!-- Last Update -->
         <div class="text-center">
             <span class="last-update">
+                <i class="bi bi-clock"></i>
                 Terakhir diperbarui: <span id="lastUpdate">-</span>
             </span>
         </div>
     </main>
-
-    <!-- Notification -->
-    <div class="notification" id="notification"></div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -655,7 +820,6 @@
             const errorMessage = document.getElementById('errorMessage');
             const apiData = document.getElementById('apiData');
             const lastUpdateElement = document.getElementById('lastUpdate');
-            const notification = document.getElementById('notification');
             const runtimeValue = document.getElementById('runtimeValue');
             
             // Fungsi untuk memuat data API
@@ -687,7 +851,6 @@
                     console.error('Error loading API data:', error);
                     showError(error.message);
                     hideLoading();
-                    showNotification('Gagal memuat data: ' + error.message, 'error');
                 }
             }
             
@@ -752,18 +915,7 @@
                 
                 // Update main status to offline
                 const mainStatus = document.getElementById('mainStatus');
-                mainStatus.innerHTML = '<span class="status-indicator status-offline"></span><span>Offline</span>';
-            }
-            
-            // Fungsi untuk menampilkan notifikasi
-            function showNotification(message, type) {
-                notification.textContent = message;
-                notification.className = `notification ${type}`;
-                notification.classList.add('show');
-                
-                setTimeout(() => {
-                    notification.classList.remove('show');
-                }, 3000);
+                mainStatus.innerHTML = '<span class="status-indicator status-offline"></span><span class="font-medium">Offline</span>';
             }
             
             // Fungsi untuk memperbarui UI dengan data status
@@ -772,10 +924,7 @@
                 const mainStatus = document.getElementById('mainStatus');
                 const statusIndicator = statusData.status ? 'status-online' : 'status-offline';
                 const statusText = statusData.status ? 'Online' : 'Offline';
-                mainStatus.innerHTML = `<span class="status-indicator ${statusIndicator}"></span><span>${statusText}</span>`;
-                
-                // Update status code
-                document.getElementById('statusCode').textContent = '200';
+                mainStatus.innerHTML = `<span class="status-indicator ${statusIndicator}"></span><span class="font-medium">${statusText}</span>`;
                 
                 // Update status values
                 document.getElementById('statusValue').textContent = statusData.result.status;
@@ -843,11 +992,6 @@
             
             // Set up polling for real-time updates (every 5 seconds)
             pollingInterval = setInterval(loadApiData, 5000);
-            
-            // Show initial notification
-            setTimeout(() => {
-                showNotification('Monitor API berjalan secara real-time', 'success');
-            }, 1000);
         });
     </script>
 </body>
